@@ -5,6 +5,8 @@ Micro web server front-end for [Scruffy](https://github.com/aivarsk/scruffy) UML
 
 So you have your own UML page like yUML and even more lean.
 
+![Screen-shot](screenshot.png)
+
 
 Installation
 ------------
