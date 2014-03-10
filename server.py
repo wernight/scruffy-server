@@ -11,15 +11,29 @@ TODO: Detect and report invalid UML inputs.
 """
 from bottle import route, run, template, response, BaseResponse
 from subprocess import check_output
+from tempfile import SpooledTemporaryFile
 
 @route('/image/<uml:path>')
 def suml(uml):
-    uml = uml.replace('\n', ',')
-    png = check_output(['suml', '--scruffy', '--png', uml])
+    # Create a memory file with the textual UML.
+    uml = uml.replace('\n', ',') or ' '
+
+    f = SpooledTemporaryFile()
+    f.write(bytes(uml, 'UTF-8'))
+    f.seek(0)
+
+    # Execute Scruffy `suml`.
+    try:
+        png = check_output(['suml', '--scruffy', '--png'], stdin=f)
+    finally:
+        f.close()
+
+    # Server the generated image.
     response.content_type = 'image/png'
     return png
 
 @route('/')
+@route('/edit/')
 @route('/edit/<uml:path>')
 def index(uml='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Customer]<>-orders*>[Order],[Order]++-0..*>[LineItem],[Order]-[note:Aggregate root.]'):
     uml = uml.replace(',', '\n')
