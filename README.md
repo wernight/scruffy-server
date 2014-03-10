@@ -41,7 +41,7 @@ Installation
         $ pip install bottle
         $ python server.py
 
- 4. Browse [http://localhost:8080/]
+ 4. Browse [http://localhost:8080/](http://localhost:8080/)
 
 Edit the end of `server.py` to change the port or IP binding.
 
