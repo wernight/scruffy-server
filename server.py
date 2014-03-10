@@ -28,14 +28,14 @@ def index(uml='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Cust
         <html>
         <head>
             <title>Scruffy</title>
+            <script type="text/javascript" src="//code.jquery.com/jquery-2.1.0.min.js"></script>
+            <script type="text/javascript" src="//code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
             <style>
             form {
                 display: inline-block;
             }
             textarea {
-                min-width: 300px;
-                width: 800px;
-                height: 300px;
                 background: #ffe;
             }
             img {
@@ -45,11 +45,10 @@ def index(uml='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Cust
         </head>
         <body>
             <form>
-                <textarea name="uml" autofocus="autofocus">{{uml}}</textarea>
+                <textarea name="uml" rows="10" cols="80" autofocus="autofocus">{{uml}}</textarea>
                 <div>See <a href="https://github.com/aivarsk/scruffy/blob/master/README.rst" target="_blank">Scruffy syntax</a>.</div>
             </form>
             <a href="#" title="Click to edit"><img src="" /></a>
-            <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
             <script type="text/javascript">
             // Update when the input text is changed (after a short delay).
             var update = function() {
@@ -77,6 +76,13 @@ def index(uml='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Cust
             var hide = function() {
               $('form').slideUp(200);
             };
+
+            // Limit the textarea size.
+            $('textarea').resizable({
+              minHeight: 100,
+              minWidth: 300,
+              handles: 'se'
+            }).parent().css('padding-bottom', '0');
 
             // Display input on click.
             $('img').click(show);
@@ -106,4 +112,4 @@ def index(uml='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Cust
         """,
         uml=uml)
 
-run(host='localhost', port=8080)
+run(host='0.0.0.0', port=8080)
