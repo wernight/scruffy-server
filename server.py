@@ -77,9 +77,26 @@ def index(uml='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Cust
             // Update when the input text is changed (after a short delay).
             (function() {
               var update = function() {
-                var uml = umlTextarea.val().replace(/(\\r\\n|\\n|\\r)/gm, ',');
-                umlImage.attr('src', '/image/' + encodeURIComponent(uml));
-                window.history.pushState('Scruffy', 'Scruffy', '/edit/' + encodeURIComponent(uml));
+                var spec = umlTextarea.val().replace(/(\\r\\n|\\n|\\r)/gm, ',');
+                var specUri = encodeURIComponent(spec);
+                umlImage.attr('src', '/image/' + specUri);
+
+                // Change the current URL after unencoding some pretty safe characters.
+                specUri = specUri.replace('%5B', '[').replace('%5D', ']');
+                specUri = specUri.replace('%3C', '<').replace('%3E', '>');
+                specUri = specUri.replace('%7B', '{').replace('%7D', '}');
+                specUri = specUri.replace('%2F', '/');
+                specUri = specUri.replace('%26', '&');
+                specUri = specUri.replace('%2B', '+');
+                specUri = specUri.replace('%2C', ',');
+                specUri = specUri.replace('%3A', ':');
+                specUri = specUri.replace('%3B', ';');
+                specUri = specUri.replace('%3D', '=');
+                specUri = specUri.replace('%24', '$');
+                specUri = specUri.replace('%40', '@');
+                specUri = specUri.replace('%7C', '|');
+
+                window.history.pushState('Scruffy', 'Scruffy', '/edit/' + specUri);
               };
               var delay = (function() {
                 var timer = 0;
