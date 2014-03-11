@@ -116,7 +116,7 @@ def index(uml='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Cust
               var inputForm = $('form');
 
               var show = function() {
-                inputForm.slideDown(200);
+                inputForm.slideDown(300);
                 umlTextarea.focus();
                 return false;
               };
@@ -124,7 +124,7 @@ def index(uml='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Cust
               var hide = function() {
                 // If the UML was successfully generated, hide the image.
                 if (umlImage.width() + umlImage.height() > 50) {
-                  inputForm.slideUp(200);
+                  inputForm.slideUp();
                 }
               };
 
@@ -167,7 +167,7 @@ def index(uml='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Cust
                 return false;
               });
 
-              hide();
+              setTimeout(hide, 1000);
             })();
             </script>
         </body>
