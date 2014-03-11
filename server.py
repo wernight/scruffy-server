@@ -16,8 +16,9 @@ from tempfile import SpooledTemporaryFile
 import suml.common
 import suml.yuml2dot
 
+@route('/image/')
 @route('/image/<spec:path>')
-def image(spec):
+def image(spec=' '):
     spec = spec.replace('\n', ',')
     fout = SpooledTemporaryFile()
 
@@ -28,7 +29,7 @@ def image(spec):
         'png': True,
         'shadow': False,
     }))
-    suml.yuml2dot.transform(spec or ' ', fout, options)
+    suml.yuml2dot.transform(spec, fout, options)
 
     fout.seek(0)
     png = fout.read()
