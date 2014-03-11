@@ -70,62 +70,84 @@ def index(uml='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Cust
             </form>
             <a href="#" title="Click to edit"><img src="" /></a>
             <script type="text/javascript">
+            var umlTextarea = $('textarea');
+            var umlImage = $('img');
+
             // Update when the input text is changed (after a short delay).
-            var update = function() {
-              var uml = $('textarea').val().replace(/(\\r\\n|\\n|\\r)/gm, ',');
-              $('img').attr('src', '/image/' + encodeURIComponent(uml));
-              window.history.pushState('Scruffy', 'Scruffy', '/edit/' + encodeURIComponent(uml));
-            };
-            var delay = (function() {
-              var timer = 0;
-              return function(callback, ms){
-                clearTimeout (timer);
-                timer = setTimeout(callback, ms);
+            (function() {
+              var update = function() {
+                var uml = umlTextarea.val().replace(/(\\r\\n|\\n|\\r)/gm, ',');
+                umlImage.attr('src', '/image/' + encodeURIComponent(uml));
+                window.history.pushState('Scruffy', 'Scruffy', '/edit/' + encodeURIComponent(uml));
               };
+              var delay = (function() {
+                var timer = 0;
+                return function(callback, ms) {
+                  clearTimeout (timer);
+                  timer = setTimeout(callback, ms);
+                };
+              })();
+              umlTextarea.on('input', function() {
+                delay(update, 300);
+              });
+              update();
             })();
-            $('textarea').on('input', function() {
-              delay(update, 300);
-            });
 
-            var show = function() {
-              $('form').slideDown(200);
-              $('textarea').focus();
-              return false;
-            };
+            // Show/hide the input textarea.
+            (function() {
+              var inputForm = $('form');
 
-            var hide = function() {
-              $('form').slideUp(200);
-            };
+              var show = function() {
+                inputForm.slideDown(200);
+                umlTextarea.focus();
+                return false;
+              };
 
-            // Limit the textarea size.
-            $('textarea').resizable({
-              minHeight: 100,
-              minWidth: 300,
-              handles: 'se'
-            }).parent().css('padding-bottom', '0');
+              var hide = function() {
+                inputForm.slideUp(200);
+              };
 
-            // Display input on click.
-            $('img').click(show);
+              // Limit the textarea size.
+              umlTextarea.resizable({
+                minHeight: 100,
+                minWidth: 300,
+                handles: 'se'
+              }).parent().css('padding-bottom', '0');
 
-            // Display input on key down, except ESC.
-            $('html').keydown(function(e) {
-              if (e.keyCode == 27) {
-                hide();
-              } else {
+              // Toggle display input on click image.
+              umlImage.click(function() {
+                if (inputForm.is(':visible')) {
+                  hide();
+                } else {
+                  show();
+                }
+                return false;
+              });
+
+              // Display input on key press.
+              $('html').keypress(function(e) {
                 show();
-              }
-            });
+              });
 
-            // Hide input when clicking outside.
-            $('html').click(function() {
+              // Hide on key ESC, show on arrow keys.
+              $('html').keydown(function(e) {
+                if (e.keyCode == 27) {
+                  hide();
+                } else if (e.keyCode >= 37 && e.keyCode <= 40) {
+                  show();
+                }
+              });
+
+              // Hide input when clicking outside.
+              $('html').click(function() {
+                hide();
+              });
+              umlTextarea.click(function() {
+                return false;
+              });
+
               hide();
-            });
-            $('textarea').click(function() {
-              return false;
-            });
-
-            update();
-            hide();
+            })();
             </script>
         </body>
         </html>
