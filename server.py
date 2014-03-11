@@ -105,7 +105,10 @@ def index(uml='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Cust
               };
 
               var hide = function() {
-                inputForm.slideUp(200);
+                // If the UML was successfully generated, hide the image.
+                if (umlImage.width() + umlImage.height() > 50) {
+                  inputForm.slideUp(200);
+                }
               };
 
               // Limit the textarea size.
