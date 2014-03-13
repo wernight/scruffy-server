@@ -8,6 +8,7 @@
     <style>
     form {
         display: inline-block;
+        vertical-align: top;
     }
     textarea {
         background: #ffe;
