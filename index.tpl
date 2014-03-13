@@ -26,6 +26,9 @@
         margin: 0;
         padding: 0;
     }
+    .on-hover {
+        display: inline-block;
+    }
     .show-on-hover {
         height: 0;
         overflow: hidden;
