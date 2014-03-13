@@ -6,20 +6,22 @@
         $ python server.py
 
  3. Browse http://localhost:8080/
-
-TODO: Detect and report invalid UML inputs.
 """
 from bottle import route, run, template, request, response, BaseResponse
 from optparse import Values
 from subprocess import check_output
 from tempfile import SpooledTemporaryFile
 from urllib import quote_plus
+import re
 import suml.common
 import suml.yuml2dot
 
 @route('/image/')
 @route('/image/<spec:path>')
 def image(spec=' '):
+    # Remove .png extension.
+    spec = re.sub('\.png$', '', spec)
+
     fout = SpooledTemporaryFile()
 
     # Execute Scruffy `suml`.
@@ -49,8 +51,8 @@ def index(spec=''):
         spec = '// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Customer]<>-orders*>[Order],[Order]++-0..*>[LineItem],[Order]-[note:Aggregate root.]'
         autocollapse = False
 
-    image_url = '/image/' + quote_plus(
-        spec.replace('\r\n', ',').replace('\r', ',').replace('\n', ','))
+    image_url = '/image/{}.png'.format(quote_plus(
+        spec.replace('\r\n', ',').replace('\r', ',').replace('\n', ',')))
 
     return template(
         'index.tpl',

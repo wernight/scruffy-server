@@ -33,7 +33,7 @@
       var update = function() {
         var spec = umlTextarea.val().replace(/(\r\n|\n|\r)/gm, ',');
         var specUri = encodeURIComponent(spec);
-        umlImage.attr('src', '/image/' + specUri);
+        umlImage.attr('src', '/image/' + specUri + '.png');
 
         // Change the current URL after unencoding some pretty safe characters.
         specUri = specUri.replace('%5B', '[').replace('%5D', ']');
