@@ -7,31 +7,42 @@
 
  3. Browse http://localhost:8080/
 """
-from bottle import route, run, template, request, response, BaseResponse
+from bottle import route, run, template, request, response, HTTPError
 from optparse import Values
 from subprocess import check_output
 from tempfile import SpooledTemporaryFile
 from urllib import quote_plus
 import re
-import suml.common
-import suml.yuml2dot
 
-@route('/image/')
-@route('/image/<spec:path>')
-def image(spec=' '):
+@route('/<type>/<spec:path>.png')
+def image(type, spec=' '):
+
     # Remove .png extension.
     spec = re.sub('\.png$', '', spec)
 
     fout = SpooledTemporaryFile()
 
-    # Execute Scruffy `suml`.
+    # Parameters for `suml`.
+    import suml.common
     options = Values(({
         'scruffy': True,
         'font': suml.common.defaultScruffyFont(),
         'png': True,
         'shadow': False,
     }))
-    suml.yuml2dot.transform(spec, fout, options)
+
+    # Fix a bug in Scruffy (for sequence diagram).
+    suml.common._boxes = {}
+
+    # Execute Scruffy `suml`.
+    if type == 'class':
+        import suml.yuml2dot
+        suml.yuml2dot.transform(spec, fout, options)
+    elif type == 'sequence':
+        import suml.suml2pic
+        suml.suml2pic.transform(spec, fout, options)
+    else:
+        return HTTPError(404, 'Unhandled diagram type.')
 
     fout.seek(0)
     png = fout.read()
@@ -42,20 +53,31 @@ def image(spec=' '):
     return png
 
 @route('/')
-@route('/edit/')
-@route('/edit/<spec:path>')
-def index(spec=''):
+@route('/<type>/')
+@route('/<type>/<spec:path>')
+def index(type='class', spec=''):
     spec = request.query.spec or spec
+
+    if type != 'class' and type != 'sequence':
+        return HTTPError(404, 'Unhandled diagram type.')
+
     autocollapse = True
     if not spec:
-        spec = '// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Customer]<>-orders*>[Order],[Order]++-0..*>[LineItem],[Order]-[note:Aggregate root.]'
+        if type =='class':
+            spec = '// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Customer]<>-orders*>[Order],[Order]++-0..*>[LineItem],[Order]-[note:Aggregate root.]'
+        elif type == 'sequence':
+            spec = '[Patron]order food>[Waiter],[Waiter]order food>[Cook],[Waiter]serve wine>[Patron],[Cook]pickup>[Waiter],[Waiter]serve food>[Patron],[Patron]pay>[Cashier]'
+        else:
+            return HTTPError(404, 'Unhandled diagram type.')
         autocollapse = False
 
-    image_url = '/image/{}.png'.format(quote_plus(
-        spec.replace('\r\n', ',').replace('\r', ',').replace('\n', ',')))
+    image_url = '{type}/{spec}.png'.format(
+        type=type,
+        spec=quote_plus(spec.replace('\r\n', ',').replace('\r', ',').replace('\n', ',')))
 
     return template(
         'index.tpl',
+        type=type,
         spec=spec.replace(',', '\n'),
         image_url=image_url,
         autocollapse=autocollapse)
