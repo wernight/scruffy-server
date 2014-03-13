@@ -9,17 +9,17 @@
 
 TODO: Detect and report invalid UML inputs.
 """
-from bottle import route, run, template, response, BaseResponse
+from bottle import route, run, template, request, response, BaseResponse
 from optparse import Values
 from subprocess import check_output
 from tempfile import SpooledTemporaryFile
+from urllib import quote_plus
 import suml.common
 import suml.yuml2dot
 
 @route('/image/')
 @route('/image/<spec:path>')
 def image(spec=' '):
-    spec = spec.replace('\n', ',')
     fout = SpooledTemporaryFile()
 
     # Execute Scruffy `suml`.
@@ -41,9 +41,11 @@ def image(spec=' '):
 
 @route('/')
 @route('/edit/')
-@route('/edit/<uml:path>')
-def index(uml='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Customer]<>-orders*>[Order],[Order]++-0..*>[LineItem],[Order]-[note:Aggregate root.]'):
-    uml = uml.replace(',', '\n')
+@route('/edit/<spec:path>')
+def index(spec='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Customer]<>-orders*>[Order],[Order]++-0..*>[LineItem],[Order]-[note:Aggregate root.]'):
+    spec = request.query.spec or spec
+    image_url = '/image/' + quote_plus(
+        spec.replace('\r\n', ',').replace('\r', ',').replace('\n', ','))
     return template("""
         <!DOCTYPE html>
         <html>
@@ -65,11 +67,12 @@ def index(uml='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Cust
             </style>
         </head>
         <body>
-            <form>
-                <textarea name="uml" rows="10" cols="80" autofocus="autofocus">{{uml}}</textarea>
+            <form action="/" method="GET">
+                <textarea name="spec" rows="10" cols="80" autofocus="autofocus">{{spec}}</textarea>
+                <input type="submit"></input>
                 <div>See <a href="https://github.com/aivarsk/scruffy/blob/master/README.rst" target="_blank">Scruffy syntax</a>.</div>
             </form>
-            <a href="#" title="Click to toggle edit mode"><img src="" /></a>
+            <a href="#" title="Click to toggle edit mode"><img src="{{image_url}}" /></a>
             <script type="text/javascript">
             var umlTextarea = $('textarea');
             var umlImage = $('img');
@@ -85,7 +88,6 @@ def index(uml='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Cust
                 specUri = specUri.replace('%5B', '[').replace('%5D', ']');
                 specUri = specUri.replace('%3C', '<').replace('%3E', '>');
                 specUri = specUri.replace('%7B', '{').replace('%7D', '}');
-                specUri = specUri.replace('%2F', '/');
                 specUri = specUri.replace('%26', '&');
                 specUri = specUri.replace('%2B', '+');
                 specUri = specUri.replace('%2C', ',');
@@ -108,7 +110,6 @@ def index(uml='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Cust
               umlTextarea.on('input', function() {
                 delay(update, 300);
               });
-              update();
             })();
 
             // Show/hide the input textarea.
@@ -169,11 +170,15 @@ def index(uml='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Cust
 
               setTimeout(hide, 1000);
             })();
+
+            // Hide the "Submit" button.
+            $('input[type=submit]').hide();
             </script>
         </body>
         </html>
         """,
-        uml=uml)
+        spec=spec.replace(',', '\n'),
+        image_url=image_url)
 
 if __name__ == "__main__":
     run(host='0.0.0.0', port=8080)
