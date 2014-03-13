@@ -22,21 +22,19 @@
     input.clipboard {
         width: 500px;
     }
-    ul.no-bullet, ul.no-bullet > li {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-    }
     .on-hover {
         display: inline-block;
     }
     .show-on-hover {
-        height: 0;
-        overflow: hidden;
-        transition: height 0.4s ease-in-out;
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.6s ease-in-out;
+        color: #999;
+        font-size: smaller;
     }
     .on-hover:hover .show-on-hover {
-        height: 80px;
+        opacity: 1;
+        visibility: initial;
     }
     </style>
 </head>
@@ -52,10 +50,9 @@
     </form>
     <div class="on-hover">
         <a href="#" title="Click to toggle edit mode"><img src="{{type}}/{{encoded_spec}}.png" /></a>
-        <ul class="show-on-hover no-bullet">
-            <li>PNG: <input id="png-export" type="text" value="{{base_url}}/{{type}}/{{encoded_spec}}.png" readonly="readonly" class="clipboard"/></li>
-            <li>SVG: <input id="svg-export" type="text" value="{{base_url}}/{{type}}/{{encoded_spec}}.svg" readonly="readonly" class="clipboard"/></li>
-        </ul>
+        <div class="show-on-hover">
+            Also available as <a id="svg-export" href="/{{type}}/{{encoded_spec}}.svg" title="SVG Vector Graphics">SVG</a>
+        </div>
     </div>
     <script type="text/javascript">
 var umlTextarea = $('textarea');
@@ -86,8 +83,7 @@ var umlImage = $('img');
     specUri = specUri.replace('%7C', '|');
 
     window.history.pushState('Scruffy', 'Scruffy', '/{{type}}/' + specUri);
-    $('#png-export').val('{{base_url}}/{{type}}/' + specUri + '.png');
-    $('#svg-export').val('{{base_url}}/{{type}}/' + specUri + '.svg');
+    $('#svg-export').attr('href', '/{{type}}/' + specUri + '.svg');
   };
   var delay = (function() {
     var timer = 0;

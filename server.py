@@ -76,14 +76,11 @@ def index(type='class', spec=''):
 
     encoded_spec = quote_plus(spec.replace('\r\n', ',').replace('\r', ',').replace('\n', ','))
 
-    urlparts = request.urlparts
-
     return template(
         'index.tpl',
         type=type,
         spec=spec.replace(',', '\n'),
         encoded_spec=encoded_spec,
-        base_url='{scheme}://{host}'.format(scheme=urlparts.scheme, host=urlparts.netloc),
         autocollapse=autocollapse)
 
 if __name__ == "__main__":
