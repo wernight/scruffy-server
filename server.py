@@ -42,15 +42,21 @@ def image(spec=' '):
 @route('/')
 @route('/edit/')
 @route('/edit/<spec:path>')
-def index(spec='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Customer]<>-orders*>[Order],[Order]++-0..*>[LineItem],[Order]-[note:Aggregate root.]'):
+def index(spec=''):
     spec = request.query.spec or spec
+    autocollapse = True
+    if not spec:
+        spec = '// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Customer]<>-orders*>[Order],[Order]++-0..*>[LineItem],[Order]-[note:Aggregate root.]'
+        autocollapse = False
+
     image_url = '/image/' + quote_plus(
         spec.replace('\r\n', ',').replace('\r', ',').replace('\n', ','))
 
     return template(
         'index.tpl',
         spec=spec.replace(',', '\n'),
-        image_url=image_url)
+        image_url=image_url,
+        autocollapse=autocollapse)
 
 if __name__ == "__main__":
     run(host='0.0.0.0', port=8080)

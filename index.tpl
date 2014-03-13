@@ -119,7 +119,9 @@
         return false;
       });
 
+      % if autocollapse:
       setTimeout(hide, 1000);
+      % end
     })();
 
     // Hide the "Submit" button.
