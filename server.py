@@ -14,22 +14,20 @@ from tempfile import SpooledTemporaryFile
 from urllib import quote_plus
 import re
 
-@route('/<type>/<spec:path>.png')
-def image(type, spec=' '):
-
-    # Remove .png extension.
-    spec = re.sub('\.png$', '', spec)
-
-    fout = SpooledTemporaryFile()
+@route('/<type>/<spec:path>.<ext:re:png|svg>')
+def image(type, spec=' ', ext='png'):
 
     # Parameters for `suml`.
     import suml.common
     options = Values(({
         'scruffy': True,
+        'png': ext == 'png',
+        'svg': ext == 'svg',
         'font': suml.common.defaultScruffyFont(),
-        'png': True,
         'shadow': False,
     }))
+
+    fout = SpooledTemporaryFile()
 
     # Fix a bug in Scruffy (for sequence diagram).
     suml.common._boxes = {}
@@ -45,12 +43,17 @@ def image(type, spec=' '):
         return HTTPError(404, 'Unhandled diagram type.')
 
     fout.seek(0)
-    png = fout.read()
+    data = fout.read()
     fout.close()
 
     # Server the generated image.
-    response.content_type = 'image/png'
-    return png
+    if ext == 'png':
+        response.content_type = 'image/png'
+    elif ext =='svg':
+        response.content_type = 'image/svg+xml'
+    else:
+        return HTTPError(500, 'Unhandled extension type.')
+    return data
 
 @route('/')
 @route('/<type>/')
@@ -71,15 +74,16 @@ def index(type='class', spec=''):
             return HTTPError(404, 'Unhandled diagram type.')
         autocollapse = False
 
-    image_url = '{type}/{spec}.png'.format(
-        type=type,
-        spec=quote_plus(spec.replace('\r\n', ',').replace('\r', ',').replace('\n', ',')))
+    encoded_spec = quote_plus(spec.replace('\r\n', ',').replace('\r', ',').replace('\n', ','))
+
+    urlparts = request.urlparts
 
     return template(
         'index.tpl',
         type=type,
         spec=spec.replace(',', '\n'),
-        image_url=image_url,
+        encoded_spec=encoded_spec,
+        base_url='{scheme}://{host}'.format(scheme=urlparts.scheme, host=urlparts.netloc),
         autocollapse=autocollapse)
 
 if __name__ == "__main__":

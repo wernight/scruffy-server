@@ -15,6 +15,25 @@
     img {
         vertical-align: top;
     }
+    h2 {
+        text-transform: capitalize;
+    }
+    input.clipboard {
+        width: 500px;
+    }
+    ul.no-bullet, ul.no-bullet > li {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+    .show-on-hover {
+        height: 0;
+        overflow: hidden;
+        transition: height 0.4s ease-in-out;
+    }
+    .on-hover:hover .show-on-hover {
+        height: 80px;
+    }
     </style>
 </head>
 <body>
@@ -27,7 +46,13 @@
         </div>
         <input type="submit"/>
     </form>
-    <a href="#" title="Click to toggle edit mode"><img src="{{image_url}}" /></a>
+    <div class="on-hover">
+        <a href="#" title="Click to toggle edit mode"><img src="{{type}}/{{encoded_spec}}.png" /></a>
+        <ul class="show-on-hover no-bullet">
+            <li>PNG: <input id="png-export" type="text" value="{{base_url}}/{{type}}/{{encoded_spec}}.png" readonly="readonly" class="clipboard"/></li>
+            <li>SVG: <input id="svg-export" type="text" value="{{base_url}}/{{type}}/{{encoded_spec}}.svg" readonly="readonly" class="clipboard"/></li>
+        </ul>
+    </div>
     <script type="text/javascript">
 var umlTextarea = $('textarea');
 var umlImage = $('img');
@@ -57,6 +82,8 @@ var umlImage = $('img');
     specUri = specUri.replace('%7C', '|');
 
     window.history.pushState('Scruffy', 'Scruffy', '/{{type}}/' + specUri);
+    $('#png-export').val('{{base_url}}/{{type}}/' + specUri + '.png');
+    $('#svg-export').val('{{base_url}}/{{type}}/' + specUri + '.svg');
   };
   var delay = (function() {
     var timer = 0;
@@ -125,6 +152,11 @@ var umlImage = $('img');
   umlTextarea.click(function() {
     return false;
   });
+
+  // Select all on inputs.
+  $('input.clipboard').click(function() {
+    $(this).select();
+  })
 
   % if autocollapse:
   setTimeout(hide, 1000);
