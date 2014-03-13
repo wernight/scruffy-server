@@ -69,7 +69,7 @@ def index(uml='// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Cust
                 <textarea name="uml" rows="10" cols="80" autofocus="autofocus">{{uml}}</textarea>
                 <div>See <a href="https://github.com/aivarsk/scruffy/blob/master/README.rst" target="_blank">Scruffy syntax</a>.</div>
             </form>
-            <a href="#" title="Click to edit"><img src="" /></a>
+            <a href="#" title="Click to toggle edit mode"><img src="" /></a>
             <script type="text/javascript">
             var umlTextarea = $('textarea');
             var umlImage = $('img');
