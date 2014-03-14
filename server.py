@@ -67,7 +67,7 @@ def index(type='class', spec=''):
     autocollapse = True
     if not spec:
         if type =='class':
-            spec = '// Cool Class Diagram,[ICustomer|+name;+email|]^-[Customer],[Customer]<>-orders*>[Order],[Order]++-0..*>[LineItem],[Order]-[note:Aggregate root.]'
+            spec = '// Cool Class Diagram,[ICustomer|+name;+email|]^-.-[Customer],[Customer]<>-orders*>[Order],[Order]++-0..*>[LineItem],[Order]-[note:Aggregate root.]'
         elif type == 'sequence':
             spec = '[Patron]order food>[Waiter],[Waiter]order food>[Cook],[Waiter]serve wine>[Patron],[Cook]pickup>[Waiter],[Waiter]serve food>[Patron],[Patron]pay>[Cashier]'
         else:
