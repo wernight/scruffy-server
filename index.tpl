@@ -51,7 +51,7 @@
     <div class="on-hover">
         <a href="#" title="Click to toggle edit mode"><img src="{{type}}/{{encoded_spec}}.png" /></a>
         <div class="show-on-hover">
-            Also available as <a id="svg-export" href="/{{type}}/{{encoded_spec}}.svg" title="SVG Vector Graphics">SVG</a> and <a id="pdf-export" href="/{{type}}/{{encoded_spec}}.pdf" title="PDF Document">PDF</a>
+            Also available as <a id="svg-export" href="/{{type}}/{{encoded_spec}}.svg" title="SVG Vector Graphics" target="_blank">SVG</a> and <a id="pdf-export" href="/{{type}}/{{encoded_spec}}.pdf" title="PDF Document" target="_blank">PDF</a>
         </div>
     </div>
     <script type="text/javascript">
