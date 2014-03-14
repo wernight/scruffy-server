@@ -8,49 +8,72 @@
  3. Browse http://localhost:8080/
 """
 from bottle import route, run, template, request, response, HTTPError
-from optparse import Values
-from subprocess import check_output
-from tempfile import SpooledTemporaryFile
-from urllib import quote_plus
 import re
+import reportlab.graphics
+import suml.suml2pic
+import suml.yuml2dot
+import svglib.svglib
+import urllib
+import xml.dom.expatbuilder
+import xml.etree.ElementTree as ET
 
-@route('/<type>/<spec:path>.<ext:re:png|svg>')
+@route('/<type>/<spec:path>.<ext:re:png|svg|pdf>')
 def image(type, spec=' ', ext='png'):
 
     # Parameters for `suml`.
     import suml.common
-    options = Values(({
+    import optparse
+    options = optparse.Values(({
         'scruffy': True,
         'png': ext == 'png',
-        'svg': ext == 'svg',
+        'svg': ext == 'svg' or ext == 'pdf',
         'font': suml.common.defaultScruffyFont(),
         'shadow': False,
     }))
 
+    from tempfile import SpooledTemporaryFile
     fout = SpooledTemporaryFile()
 
     # Fix a bug in Scruffy (for sequence diagram).
     suml.common._boxes = {}
 
+    # Fix a bug in Scruffy (remove ns0 namespace prefix).
+    if ext == 'svg':
+        ET.register_namespace('', 'http://www.w3.org/2000/svg')
+
     # Execute Scruffy `suml`.
     if type == 'class':
-        import suml.yuml2dot
         suml.yuml2dot.transform(spec, fout, options)
     elif type == 'sequence':
-        import suml.suml2pic
         suml.suml2pic.transform(spec, fout, options)
     else:
         return HTTPError(404, 'Unhandled diagram type.')
 
+    # Retrieve the data generated.
     fout.seek(0)
     data = fout.read()
     fout.close()
 
+    # Convert SVG to PDF?
+    if ext == 'pdf':
+        # Load SVG file.
+        doc = xml.dom.expatbuilder.parseString(data)
+
+        # Convert to a RLG drawing
+        svg_renderer = svglib.svglib.SvgRenderer()
+        svg_renderer.render(doc.documentElement)
+        drawing = svg_renderer.finish()
+
+        # Generate PDF.
+        data = reportlab.graphics.renderPDF.drawToString(drawing)
+
     # Server the generated image.
     if ext == 'png':
         response.content_type = 'image/png'
-    elif ext =='svg':
+    elif ext == 'svg':
         response.content_type = 'image/svg+xml'
+    elif ext == 'pdf':
+        response.content_type = 'application/pdf'
     else:
         return HTTPError(500, 'Unhandled extension type.')
     return data
@@ -77,7 +100,7 @@ def index(type='class', spec=''):
             return HTTPError(404, 'Unhandled diagram type.')
         autocollapse = False
 
-    encoded_spec = quote_plus(spec.replace('\r\n', ',').replace('\r', ',').replace('\n', ','))
+    encoded_spec = urllib.quote_plus(spec.replace('\r\n', ',').replace('\r', ',').replace('\n', ','))
 
     return template(
         'index.tpl',
