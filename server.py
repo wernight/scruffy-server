@@ -38,7 +38,7 @@ def image(type, spec=' ', ext='png'):
     suml.common._boxes = {}
 
     # Fix a bug in Scruffy (remove ns0 namespace prefix).
-    if ext == 'svg':
+    if options.svg:
         ET.register_namespace('', 'http://www.w3.org/2000/svg')
 
     # Execute Scruffy `suml`.
