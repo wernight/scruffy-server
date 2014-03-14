@@ -26,15 +26,10 @@ Installation
 
  1. Install Scruffy pre-requisites:
       * On **Ubuntu** Linux you'd do:
-
-            $ sudo apt-get install graphviz plotutils librsvg2-bin python-imaging
-
+        `$ sudo apt-get install graphviz plotutils librsvg2-bin python-imaging`
       * On **Arch** Linux you'd do:
-
-            $ pacman -S graphviz plotutils librsvg python2-pillow
-
-      * General: You'll need [Python](http://www.python.org/), [dot](http://www.graphviz.org/), [libRSVG](https://wiki.gnome.org/Projects/LibRsvg) binaries, [pic2plot](http://www.gnu.org/software/plotutils/), and [Python Imaging Library (PIL)](http://www.pythonware.com/products/pil/) or [Python Pillow](http://pillow.readthedocs.org/).
-
+        `$ pacman -S graphviz plotutils librsvg python2-pillow`
+      * In *general*: You'll need [Python](http://www.python.org/), [dot](http://www.graphviz.org/), [libRSVG](https://wiki.gnome.org/Projects/LibRsvg) binaries, [pic2plot](http://www.gnu.org/software/plotutils/), and [Python Imaging Library (PIL)](http://www.pythonware.com/products/pil/) or [Python Pillow](http://pillow.readthedocs.org/).
  2. Run Scruffy-Server:
 
         $ git clone https://github.com/wernight/scruffy-server.git
