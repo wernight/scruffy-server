@@ -56,6 +56,9 @@ def image(type, spec=' ', ext='png'):
     return data
 
 @route('/')
+def index():
+    return template('home.tpl')
+
 @route('/<type>/')
 @route('/<type>/<spec:path>')
 def index(type='class', spec=''):
