@@ -5,6 +5,16 @@ Micro web server front-end for [Scruffy](https://github.com/aivarsk/scruffy) UML
 
 So you have your own UML page like [yUML](http://yuml.me) and even more lean.
 
+Features
+--------
+
+ * UML Class diagram
+ * UML Sequence diagram
+ * PNG / SVG export
+ * Simple and fast interface
+ * Works also without JavaScript
+
+
 Screenshot
 ----------
 
@@ -25,23 +35,15 @@ Installation
 
       * General: You'll need [Python](http://www.python.org/), [dot](http://www.graphviz.org/), [libRSVG](https://wiki.gnome.org/Projects/LibRsvg) binaries, [pic2plot](http://www.gnu.org/software/plotutils/), and [Python Imaging Library (PIL)](http://www.pythonware.com/products/pil/) or [Python Pillow](http://pillow.readthedocs.org/).
 
- 2. Install Scruffy itself:
-
-        $ git clone https://github.com/aivarsk/scruffy.git
-        $ cd scruffy
-        $ virtualenv ENV --system-site-packages && source ENV/bin/activate    # (optional)
-        $ python2 setup.py install    # (Scruffy doesn't work yet on Python3)
-        $ suml --help
-        Should display help...
-
- 3. Run Scruffy-Server:
+ 2. Run Scruffy-Server:
 
         $ git clone https://github.com/wernight/scruffy-server.git
         $ cd scruffy-server
-        $ pip install bottle
+        $ virtualenv ENV --system-site-packages && source ENV/bin/activate    # (optional)
+        $ pip install -r requirements.txt
         $ python server.py
 
- 4. Browse [http://localhost:8080/](http://localhost:8080/)
+ 3. Browse [http://localhost:8080/](http://localhost:8080/)
 
 Edit the end of `server.py` to change the port or IP binding.
 
