@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# vim: ai ts=4 sts=4 et sw=4
 """
  1. Install Scruffy
  2. Run server:
@@ -33,13 +35,6 @@ def image(type, spec=' ', ext='png'):
 
     from tempfile import SpooledTemporaryFile
     fout = SpooledTemporaryFile()
-
-    # Fix a bug in Scruffy (for sequence diagram).
-    suml.common._boxes = {}
-
-    # Fix a bug in Scruffy (remove ns0 namespace prefix).
-    if options.svg:
-        ET.register_namespace('', 'http://www.w3.org/2000/svg')
 
     # Execute Scruffy `suml`.
     if type == 'class':
