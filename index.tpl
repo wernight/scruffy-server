@@ -69,7 +69,6 @@ var umlImage = $('img');
     umlImage.attr('src', specUri + '.png');
 
     // Change the current URL after unencoding some pretty safe characters.
-    specUri = specUri.replace('%5B', '[').replace('%5D', ']');
     specUri = specUri.replace('%3C', '<').replace('%3E', '>');
     specUri = specUri.replace('%7B', '{').replace('%7D', '}');
     specUri = specUri.replace('%26', '&');
