@@ -1,4 +1,5 @@
-Pillow>=2.0,<3.0
-bottle>=0.12,<0.13
-scruffy>=0.2,<0.3
-svglib>=0.6,<0.7
+Pillow==2.4.0
+bottle==0.12.5
+reportlab==3.0
+scruffy==0.2
+svglib==0.6.3
