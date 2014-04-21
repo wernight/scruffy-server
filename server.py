@@ -9,7 +9,7 @@
 
  3. Browse http://localhost:8080/
 """
-from bottle import route, run, template, request, response, HTTPError
+from bottle import route, run, template, request, response, static_file, HTTPError
 import re
 import reportlab.graphics
 import suml.suml2pic
@@ -18,6 +18,20 @@ import svglib.svglib
 import urllib
 import xml.dom.expatbuilder
 import xml.etree.ElementTree as ET
+
+@route('/favicon.ico')
+def favicon():
+    return static('favicon.ico')
+
+@route('/robots.txt')
+def robots():
+    return static('robots.txt')
+
+# Those files should be served directly by the web server,
+# but for ease during development they are served here.
+@route('/static/<path:path>')
+def static(path):
+    return static_file(path, 'static')
 
 @route('/<type>/<spec:path>.<ext:re:png|svg|pdf>')
 def image(type, spec=' ', ext='png'):

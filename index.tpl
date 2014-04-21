@@ -2,19 +2,30 @@
 <html>
 <head>
     <title>Scruffy</title>
-    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.0.min.js"></script>
-    <script type="text/javascript" src="//code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <script type="text/javascript" src="/static/zepto.min.js"></script>
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
     <style>
+    body {
+        padding: 0;
+        margin: 0;
+    }
     form {
-        display: inline-block;
+        float: left;
         vertical-align: top;
+        width: 62%;
+        transition: 400ms;
+    }
+    .hide form {
+        opacity: 0;
     }
     textarea {
         background: #ffe;
+        width: 100%;
+        height: 220px;
     }
     img {
+        width: 100%;
         vertical-align: top;
     }
     h2 {
@@ -24,7 +35,15 @@
         width: 500px;
     }
     .on-hover {
-        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        vertical-align: top;
+        transition: 400ms;
+    }
+    .show .on-hover {
+        left: 62%;
+        margin-left: 10px;
     }
     .show-on-hover {
         opacity: 0;
@@ -33,16 +52,36 @@
         color: #999;
         font-size: smaller;
     }
+    .show .show-on-hover,
     .on-hover:hover .show-on-hover {
         opacity: 1;
         visibility: initial;
     }
+
+    @media (min-width: 700px) {
+        body {
+            margin: 10px;
+        }
+    }
+
+    @media (min-height: 550px) {
+        .show .on-hover {
+            top: 300px;
+            left: 0;
+        }
+        form {
+            width: 100%;
+        }
+        img {
+            max-width: 100%;
+            margin-left: 0;
+        }
+    }
     </style>
 </head>
-<body>
+<body class="show">
     <form action="/{{type}}/" method="GET">
-        <h2>UML {{type}} diagram</h2>
-        <textarea name="spec" rows="15" cols="75" autofocus="autofocus">{{spec}}</textarea>
+        <textarea name="spec" autofocus="autofocus">{{spec}}</textarea>
         <div>
           See <a href="https://github.com/aivarsk/scruffy/blob/master/README.rst#{{type}}-diagrams" target="_blank">Scruffy syntax</a>.
           New <a href="/class/">class diagram</a>, <a href="/sequence/">sequence diagram</a>.
@@ -103,7 +142,8 @@ var umlImage = $('img');
   var inputForm = $('form');
 
   var show = function() {
-    inputForm.show(300);
+    $('body').removeClass('hide');
+    $('body').addClass('show');
     umlTextarea.focus();
     return false;
   };
@@ -111,20 +151,15 @@ var umlImage = $('img');
   var hide = function() {
     // If the UML was successfully generated, hide the image.
     if (umlImage.width() + umlImage.height() > 50) {
-      inputForm.hide(400);
+      $('body').addClass('hide');
+      $('body').removeClass('show');
     }
   };
 
-  // Limit the textarea size.
-  umlTextarea.resizable({
-    minHeight: 100,
-    minWidth: 300,
-    handles: 'se'
-  }).parent().css('padding-bottom', '0');
-
   // Toggle display input on click image.
+  var visible = true;
   umlImage.click(function() {
-    if (inputForm.is(':visible')) {
+    if ($('body').hasClass('show')) {
       hide();
     } else {
       show();
