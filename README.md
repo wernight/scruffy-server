@@ -13,12 +13,15 @@ Features
  * PNG / SVG export
  * Simple and fast interface
  * Works also without JavaScript
+ * Mobile friendly
 
 
 Screenshot
 ----------
 
 ![Screenshot](screenshot.png)
+
+![Screenshot Mobile](screenshot-mobile.png)
 
 
 Installation
