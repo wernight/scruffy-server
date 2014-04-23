@@ -81,7 +81,7 @@
 </head>
 <body class="show">
     <form action="/{{type}}/" method="GET">
-        <textarea name="spec" autofocus="autofocus">{{spec}}</textarea>
+        <textarea name="spec" autofocus="autofocus" inputmode="verbatim">{{spec}}</textarea>
         <div>
           See <a href="https://github.com/aivarsk/scruffy/blob/master/README.rst#{{type}}-diagrams" target="_blank">Scruffy syntax</a>.
           New <a href="/class/">class diagram</a>, <a href="/sequence/">sequence diagram</a>.
