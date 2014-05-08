@@ -57,6 +57,16 @@ or proxied behind a password protected URL.
 Troubleshooting FAQ
 -------------------
 
+### Why is there no password protection or ACL?
+
+The only real risk is that your server isn't well **sandboxed** and a user sends malicious UML code.
+
+For users however there is **no real need for password** protection because the URL shared is the entire UML diagram source code.
+This means that no one can try to guess your UML by trying random URLs (as it would only generate all possible UMLs),
+and any change to an existing UML will generate a new URL. So you can generate a diagram, share it, without
+ever needing a password. **Just remember: URL = UML.**
+
+
 ### The UML image doesn't render properly!
 
 Check that the user running `server.py` can execute Scruffy `suml` command.
