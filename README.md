@@ -61,6 +61,8 @@ Similar Tools
   * [PlantUML](http://plantuml.sourceforge.net/) An OpenSource Java solution, also text based which supports most UML diagrams with a more classic look (and not a so great mobile support).
   * [draw.io](https://www.draw.io/) and [Lucidchart](https://www.lucidchart.com/) are also online solutions but not auto-generated from text.
 
+*scruffy-server* is good for lean short UML diagrams even from a mobile phone or tablet.
+
 
 Troubleshooting FAQ
 -------------------
