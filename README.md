@@ -54,6 +54,14 @@ there is no ACL, no spam check, and no caching. So you probably would want it on
 or proxied behind a password protected URL.
 
 
+Similar Tools
+-------------
+
+  * [yUML](http://yuml.me) Which is very similar commercial alternative, with Use Case, Activity, and Class diagram support (and not a so great mobile support).
+  * [PlantUML](http://plantuml.sourceforge.net/) An OpenSource Java solution, also text based which supports more UML diagrams with a more classic look (and not a so great mobile support).
+  * [draw.io](https://www.draw.io/) and [Lucidchart](https://www.lucidchart.com/) are also online solutions but not auto-generated from text.
+
+
 Troubleshooting FAQ
 -------------------
 
