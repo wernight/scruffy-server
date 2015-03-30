@@ -27,6 +27,16 @@ Screenshot
 Installation
 ------------
 
+### Using Docker
+
+If you have [Docker](https://www.docker.com/) installed you can run [neam/scruffy-server](https://registry.hub.docker.com/u/neam/scruffy-server/):
+
+    $ docker run -tP --rm neam/scruffy-server
+
+And browse to [http://localhost:8080/](http://localhost:8080/)
+
+### Manual Install
+
  1. Install Scruffy pre-requisites:
       * On **Ubuntu** Linux you'd do:
         `$ sudo apt-get install python-dev python-setuptools graphviz plotutils librsvg2-bin`
