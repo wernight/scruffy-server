@@ -41,7 +41,7 @@ And browse to [http://localhost:8080/](http://localhost:8080/)
       * On **Ubuntu** Linux you'd do:
         `$ sudo apt-get install python-dev python-setuptools graphviz plotutils librsvg2-bin`
       * On **Arch** Linux you'd do:
-        `$ pacman -S graphviz plotutils librsvg python2-pillow`
+        `$ pacman -S graphviz python2 plotutils librsvg`
       * In *general*: You'll need [Python](http://www.python.org/), [dot](http://www.graphviz.org/), [libRSVG](https://wiki.gnome.org/Projects/LibRsvg) binaries, [pic2plot](http://www.gnu.org/software/plotutils/), and [Python Imaging Library (PIL)](http://www.pythonware.com/products/pil/) or [Python Pillow](http://pillow.readthedocs.org/).
  2. Run Scruffy-Server:
 
