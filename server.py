@@ -33,6 +33,28 @@ def robots():
 def static(path):
     return static_file(path, 'static')
 
+@route('/<type>/<spec:path>.dot')
+def image(type, spec=' '):
+
+    # Parameters for `suml`.
+    import optparse
+    options = optparse.Values(({
+        'scruffy': True,
+        'font': 'Purisa',
+        'shadow': False,
+    }))
+
+    # Execute Scruffy `suml`.
+    if type == 'class':
+        dot = suml.yuml2dot.yuml2dot(spec, options)
+    elif type == 'sequence':
+        dot = suml.suml2pic.suml2pic(spec, options)
+    else:
+        return HTTPError(404, 'Unhandled diagram type.')
+
+    return dot
+
+
 @route('/<type>/<spec:path>.<ext:re:png|svg|pdf>')
 def image(type, spec=' ', ext='png'):
 

@@ -1,8 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="MSSmartTagsPreventParsing" content="true" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Scruffy</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" type="text/css" href="canviz.css" />
+  <!--[if lte IE 6]><link rel="stylesheet" type="text/css" href="canviz-ie6.css" /><![endif]-->
+  <!--[if IE]><script type="text/javascript" src="excanvas/excanvas.js"></script><![endif]-->
+  <script type="text/javascript" src="prototype/prototype.js"></script>
+  <script type="text/javascript" src="path/path.js"></script>
+  <script type="text/javascript" src="canviz.js"></script>
+  <script type="text/javascript" src="x11colors.js"></script>
+  <script type="text/javascript" src="graphs/graphlist.js"></script>
+  <script type="text/javascript" src="graphs/layoutlist.js"></script>
     <script type="text/javascript" src="/static/zepto.min.js"></script>
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <style>
@@ -89,12 +100,22 @@
         <input type="submit"/>
     </form>
     <div class="on-hover">
+        <div id="page_container">
+          <div id="graph_container"></div>
+          <div id="debug_output"></div>
+        </div>
         <a href="#" title="Click to toggle edit mode"><img src="{{type}}/{{encoded_spec}}.png" /></a>
         <div class="show-on-hover">
             Also available as <a id="svg-export" href="/{{type}}/{{encoded_spec}}.svg" title="SVG Vector Graphics" target="_blank">SVG</a> and <a id="pdf-export" href="/{{type}}/{{encoded_spec}}.pdf" title="PDF Document" target="_blank">PDF</a>
         </div>
     </div>
     <script type="text/javascript">
+(function() {
+  canviz = new Canviz('graph_container');
+  canviz.setImagePath('graphs/images/');
+  canviz.setScale($F('graph_scale'));
+  canviz.load(graph_url());
+})();
 var umlTextarea = $('textarea');
 var umlImage = $('img');
 
