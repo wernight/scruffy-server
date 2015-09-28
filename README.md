@@ -29,9 +29,9 @@ Installation
 
 ### Using Docker
 
-If you have [Docker](https://www.docker.com/) installed you can run [neam/scruffy-server](https://registry.hub.docker.com/u/neam/scruffy-server/):
+If you have [Docker](https://www.docker.com/) installed you can run [wernight/scruffy-server](https://registry.hub.docker.com/u/wernight/scruffy-server/):
 
-    $ docker run -itP --rm neam/scruffy-server
+    $ docker run -d -p 8080:8080 wernight/scruffy-server
 
 And browse to [http://localhost:8080/](http://localhost:8080/)
 
