@@ -1,12 +1,8 @@
-scruffy-server
-==============
+[![](https://badge.imagelayers.io/wernight/scruffy-server:latest.svg)](https://imagelayers.io/?images=wernight/scruffy-server:latest 'Get your own badge on imagelayers.io')
 
-Micro web server front-end for [Scruffy](https://github.com/aivarsk/scruffy) UML.
+**scruffy-server** is a micro web server front-end for [Scruffy](https://github.com/aivarsk/scruffy): A UML class/sequence diagram generator from human text, like yUML, with a very clean interface.
 
-So you have your own UML page like [yUML](http://yuml.me) and even more lean.
-
-Features
---------
+Features:
 
  * UML Class diagram
  * UML Sequence diagram
@@ -16,26 +12,50 @@ Features
  * Mobile friendly
 
 
-Screenshot
-----------
+### Screenshots
 
 ![Screenshot](screenshot.png)
 
 ![Screenshot Mobile](screenshot-mobile.png)
 
 
-Installation
-------------
+### Installation
 
-### Using Docker
 
-If you have [Docker](https://www.docker.com/) installed you can run [wernight/scruffy-server](https://registry.hub.docker.com/u/wernight/scruffy-server/):
+#### Using Docker
+
+If you have [Docker](https://www.docker.com/) installed:
 
     $ docker run -d -p 8080:8080 wernight/scruffy-server
 
 And browse to [http://localhost:8080/](http://localhost:8080/)
 
-### Manual Install
+That Dockerize container is:
+
+  * **Small**: Using [Debian image][debian] is below 100 MB (while Ubuntu is about 230 MB), and removing build packages.
+  * **Simple**: Exposes default port, easy to extend.
+  * **Secure**: Runs as non-root UID/GID `35726` (selected randomly to avoid mapping to an existing user).
+
+
+##### Deploy for Production
+
+You can deploy on Kubernetes (for example on Google Container Engine), once you've kubectl and a running cluster:
+
+    $ kubectl run-container scruffy --image=wernight/scruffy-server:latest --port=80
+    $ kubectl expose rc scruffy --port=80 --target-port=8080 --create-external-load-balancer
+
+Wait may be a minute or so and you should have a public IP (the second one here):
+
+    $ kubectl get svc scruffy
+    NAME      LABELS        SELECTOR      IP(S)           PORT(S)
+    scruffy   run=scruffy   run=scruffy   10.255.255.10   80/TCP
+                                          104.123.45.67
+    $ xdg-open http://104.123.45.67
+
+Be aware that there is no ACL, no spam check, and no caching (i.e. anyone can access by default and evil doers might use all your CPU). So you probably would want it only on a private network or proxied behind a password protected URL. For example you could put it behind Nginx as reverse proxy, with a basic authentication.
+
+
+#### Manual Install
 
  1. Install Scruffy pre-requisites:
       * On **Ubuntu** Linux you'd do:
@@ -55,17 +75,10 @@ And browse to [http://localhost:8080/](http://localhost:8080/)
 
 Edit the end of `server.py` to change the port or IP binding.
 
-
-Deployment
-----------
-
-Check [Bottle Deployment](http://bottlepy.org/docs/dev/tutorial.html#deployment) but be aware that
-there is no ACL, no spam check, and no caching. So you probably would want it only on a private network
-or proxied behind a password protected URL.
+See also [Bottle Deployment](http://bottlepy.org/docs/dev/tutorial.html#deployment).
 
 
-Similar Tools
--------------
+### Similar Tools
 
   * [yUML](http://yuml.me) Which is very similar commercial alternative, with Use Case, Activity, and Class diagram support (and not a so great mobile support).
   * [PlantUML](http://plantuml.sourceforge.net/) An OpenSource Java solution, also text based which supports most UML diagrams with a more classic look (and not a so great mobile support).
@@ -74,10 +87,9 @@ Similar Tools
 *scruffy-server* is good for lean short UML diagrams even from a mobile phone or tablet.
 
 
-Troubleshooting FAQ
--------------------
+### Troubleshooting FAQ
 
-### Why is there no password protection or ACL?
+#### Why is there no password protection or ACL?
 
 The only real risk is that your server isn't well **sandboxed** and a user sends malicious UML code.
 
@@ -87,12 +99,12 @@ and any change to an existing UML will generate a new URL. So you can generate a
 ever needing a password. **Just remember: URL = UML.**
 
 
-### The UML image doesn't render properly!
+#### The UML image doesn't render properly!
 
 Check that the user running `server.py` can execute Scruffy `suml` command.
 
 
-### Text looks like blocs, Pango font Warnings!
+#### Text looks like blocs, Pango font Warnings!
 
 Chech [Arch Fonts - Pango Warnings](https://wiki.archlinux.org/index.php/fonts#Pango_Warnings). You may want to install `ttf-tlwg` to have *Purisa*
 and a more scruffy look (a bit like *Comic Sans*).
@@ -100,7 +112,13 @@ and a more scruffy look (a bit like *Comic Sans*).
 You can also add `..., '--font-family', 'Purisa', ...` to `suml` parameters.
 
 
-### How do change the UML font and style?
+#### How do change the UML font and style?
 
 Change the `check_output(...)` parameters in `server.py`.
 Execute `$ suml --help` to find what is allowed.
+
+
+### Feedbacks
+
+Improvement ideas and pull requests are welcome via
+[Github Issue Tracker](https://github.com/wernight/scruffy-server/issues).
