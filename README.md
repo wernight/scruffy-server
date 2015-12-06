@@ -14,9 +14,9 @@ Features:
 
 ### Screenshots
 
-![Screenshot](screenshot.png)
+![Screenshot](https://github.com/wernight/scruffy-server/raw/master/screenshot.png)
 
-![Screenshot Mobile](screenshot-mobile.png)
+![Screenshot Mobile](https://github.com/wernight/scruffy-server/raw/master/screenshot-mobile.png)
 
 
 ### Installation
