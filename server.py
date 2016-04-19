@@ -10,6 +10,7 @@
  3. Browse http://localhost:8080/
 """
 from bottle import route, run, template, request, response, static_file, HTTPError
+import os
 import re
 import reportlab.graphics
 import suml.suml2pic
@@ -43,7 +44,7 @@ def image(type, spec=' ', ext='png'):
         'scruffy': True,
         'png': ext == 'png',
         'svg': ext == 'svg' or ext == 'pdf',
-        'font': suml.common.defaultScruffyFont(),
+        'font': os.getenv('SCRUFFY_FONT', suml.common.defaultScruffyFont()),
         'shadow': False,
     }))
 

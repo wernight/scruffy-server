@@ -109,13 +109,14 @@ Check that the user running `server.py` can execute Scruffy `suml` command.
 Chech [Arch Fonts - Pango Warnings](https://wiki.archlinux.org/index.php/fonts#Pango_Warnings). You may want to install `ttf-tlwg` to have *Purisa*
 and a more scruffy look (a bit like *Comic Sans*).
 
-You can also add `..., '--font-family', 'Purisa', ...` to `suml` parameters.
+You can also add `..., '--font-family', 'Purisa', ...` to `suml` parameters, see "How to change the UML font and style" question below.
 
 
-#### How do change the UML font and style?
+#### How to change the UML font and style?
 
-Change the `check_output(...)` parameters in `server.py`.
-Execute `$ suml --help` to find what is allowed.
+If you just want to use another font, you can set environement variable `SCRUFFY_FONT` to the font family you'd like to use.
+
+For a full list of possible settings, execute `$ suml --help` to find what is allowed and change the `check_output(...)` parameters in `server.py`.
 
 
 ### Feedbacks
