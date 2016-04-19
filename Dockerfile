@@ -1,41 +1,50 @@
-FROM debian:jessie
+FROM alpine:3.3
 
 MAINTAINER Werner Beroux <werner@beroux.com>
 
 COPY . /opt/scruffy-server
 
-RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-        fonts-tlwg-purisa \
-        git \
+RUN set -x \
+    && apk add --update \
         graphviz \
-        libjpeg-dev \
-        librsvg2-bin \
-        plotutils \
+        libjpeg \
+        librsvg \
+        python \
+        py-pillow \
+        zlib \
+    && apk add -t .build-deps \
+        make \
+        g++ \
+        git \
         python-dev \
-        python-pil \
-        python-pip \
-        python-setuptools \
-        zlib1g-dev \
+        py-pip \
+        py-setuptools \
+        zlib-dev \
 
-    && git clone https://github.com/aivarsk/scruffy.git /opt/scruffy \
-    && cd /opt/scruffy \
-    && python setup.py install \
+    && mkdir -p /usr/share/fonts/opentype/dion \
+    && cd /usr/share/fonts/opentype/dion \
+    && wget -O dion.zip 'http://dl.dafont.com/dl/?f=dion' \
+    && unzip dion.zip \
+    && rm dion.zip \
+    && fc-cache -f -v \
+
+    && wget -O- https://mirrors.kernel.org/gnu/plotutils/plotutils-2.6.tar.gz | tar -xz -C /tmp \
+    && cd /tmp/plotutils-2.6 \
+    && ./configure \
+    && make install \
+    && make installcheck \
+    && cd pic2plot \
+    && make install \
     && cd - \
-    && rm -rf scruffy \
+    && rm -rf /tmp/plotutils-2.6 \
 
     && cd /opt/scruffy-server \
     && pip install -r requirements.txt \
 
-    && apt-get purge --auto-remove -y \
-        git \
-        python-dev \
-        python-pip \
-        python-setuptools \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && apk del --purge .build-deps \
+    && rm /var/cache/apk/* \
 
-    && useradd --system --uid 35726 -m --shell /usr/sbin/nologin scruffy
+    && adduser -S -u 35726 -s /sbin/nologin scruffy
 
 # Run as non-root user
 USER scruffy
