@@ -2,7 +2,7 @@
   "v": "4.0",
   "name": "scruffy-server",
   "workspace": {
-    "name": "scruffy-server",
+    "name": "scruffy-server-factory",
     "defaultEnv": "default",
     "environments": [
       {
