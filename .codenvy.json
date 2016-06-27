@@ -1,35 +1,12 @@
 {
   "v": "4.0",
-  "name": "scruffy-server",
   "workspace": {
-    "name": "scruffy-server-factory",
-    "defaultEnv": "default",
-    "environments": [
-      {
-        "name": "default",
-        "machineConfigs": [
-          {
-            "limits": {
-              "ram": 1000
-            },
-            "name": "default",
-            "type": "docker",
-            "source": {
-              "type": "dockerfile",
-              "content": "FROM codenvy/ubuntu_python:2.7\nRUN sudo apt install -y graphviz plotutils libjpeg8-dev zlib1g-dev librsvg2-bin && sudo pip install Pillow"
-            },
-            "dev": true,
-            "servers": [],
-            "envVariables": {},
-            "links": []
-          }
-        ]
-      }
-    ],
+    "name": "scruffy-server",
     "projects": [
       {
         "links": [],
         "name": "scruffy-server",
+        "type": "blank",
         "attributes": {
           "contribute_to_branch": [
             "master"
@@ -45,6 +22,29 @@
         "problems": [],
         "mixins": [
           "pullrequest"
+        ]
+      }
+    ],
+    "defaultEnv": "scruffy-server",
+    "environments": [
+      {
+        "name": "scruffy-server",
+        "machineConfigs": [
+          {
+            "name": "dev-machine",
+            "dev": true,
+            "type": "docker",
+            "source": {
+              "type": "dockerfile",
+              "content": "FROM codenvy/ubuntu_python:2.7\nRUN sudo apt install -y graphviz plotutils libjpeg8-dev zlib1g-dev librsvg2-bin && sudo pip install Pillow"
+            },
+            "limits": {
+              "ram": 1000
+            },
+            "servers": [],
+            "envVariables": {},
+            "links": []
+          }
         ]
       }
     ],
