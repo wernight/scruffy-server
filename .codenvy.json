@@ -50,7 +50,7 @@
     ],
     "commands": [
       {
-        "commandLine": "sudo virtualenv /env && sudo chown user:user /env && source /env/bin/activate && cd ${current.project.path} && pip install -r requirements.txt && python server.py",
+        "commandLine": "sudo virtualenv /env && sudo chown -R user:user /env && source /env/bin/activate && cd ${current.project.path} && pip install -r requirements.txt && python server.py",
         "name": "Start dev server",
         "attributes": {
           "previewUrl": "http://${server.port.8080}"
