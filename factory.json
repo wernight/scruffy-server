@@ -1,0 +1,89 @@
+{
+  "v": "4.0",
+  "name": "scruffy-server",
+  "workspace": {
+    "name": "scruffy-server",
+    "defaultEnv": "default",
+    "environments": [
+      {
+        "name": "default",
+        "machineConfigs": [
+          {
+            "limits": {
+              "ram": 1000
+            },
+            "name": "default",
+            "type": "docker",
+            "source": {
+              "type": "dockerfile",
+              "content": "FROM codenvy/ubuntu_python:2.7\nRUN sudo apt install -y graphviz plotutils libjpeg8-dev zlib1g-dev librsvg2-bin && sudo pip install Pillow"
+            },
+            "dev": true,
+            "servers": [],
+            "envVariables": {},
+            "links": []
+          }
+        ]
+      }
+    ],
+    "projects": [
+      {
+        "links": [],
+        "name": "scruffy-server",
+        "attributes": {
+          "contribute_to_branch": [
+            "master"
+          ]
+        },
+        "source": {
+          "location": "https://github.com/wernight/scruffy-server.git",
+          "type": "git",
+          "parameters": {}
+        },
+        "path": "/scruffy-server",
+        "description": "Scruffy micro web server to have your own UML class/sequence diagram page like yUML and even more lean.",
+        "problems": [],
+        "mixins": [
+          "pullrequest"
+        ]
+      }
+    ],
+    "commands": [
+      {
+        "commandLine": "sudo virtualenv /env && sudo chown user:user /env && source /env/bin/activate && cd ${current.project.path} && pip install -r requirements.txt && python server.py",
+        "name": "Start dev server",
+        "attributes": {
+          "previewUrl": "http://${server.port.8080}"
+        },
+        "type": "custom"
+      }
+    ],
+    "links": []
+  },
+  "ide": {
+    "onProjectsLoaded": {
+      "actions": [
+        {
+          "properties": {
+            "file": "${current.project.path}/README.md"
+          },
+          "id": "openFile"
+        },
+        {
+          "properties": {
+            "name": "Start dev server"
+          },
+          "id": "runCommand"
+        }
+      ]
+    },
+    "onAppClosed": {
+      "actions": [
+        {
+          "properties": {},
+          "id": "warnOnClose"
+        }
+      ]
+    }
+  }
+}
