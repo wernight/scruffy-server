@@ -1,4 +1,4 @@
-[![ImageLayers badge](https://badge.imagelayers.io/wernight/scruffy-server:latest.svg)](https://imagelayers.io/?images=wernight/scruffy-server:latest 'Get your own badge on imagelayers.io') [![Codenvy badge](http://beta.codenvy.com/factory/resources/codenvy-contribute.svg)](http://beta.codenvy.com/f?url=https://github.com/wernight/scruffy-server 'Start development server on Codenvy')
+[![Codenvy badge](http://beta.codenvy.com/factory/resources/codenvy-contribute.svg)](http://beta.codenvy.com/f?url=https://github.com/wernight/scruffy-server 'Start development server on Codenvy')
 
 **scruffy-server** is a micro web server front-end for [Scruffy](https://github.com/aivarsk/scruffy): A UML class/sequence diagram generator from human text, like yUML, with a very clean interface.
 
