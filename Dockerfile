@@ -1,4 +1,4 @@
-FROM alpine:3.3
+FROM alpine:3.8
 
 MAINTAINER Werner Beroux <werner@beroux.com>
 
