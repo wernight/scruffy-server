@@ -80,6 +80,7 @@ See also [Bottle Deployment](http://bottlepy.org/docs/dev/tutorial.html#deployme
 
 ### Similar Tools
 
+  * [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/) using JavaScript only.
   * [yUML](http://yuml.me) Which is very similar commercial alternative, with Use Case, Activity, and Class diagram support (and not a so great mobile support).
   * [PlantUML](http://plantuml.sourceforge.net/) An OpenSource Java solution, also text based which supports most UML diagrams with a more classic look (and not a so great mobile support).
   * [nomnoml](http://www.nomnoml.com/) A UML class diagram using JavaScript (only).
